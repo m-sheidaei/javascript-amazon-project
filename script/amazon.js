@@ -55,8 +55,6 @@ function productList() {
   });
 
   productContainer.innerHTML = htmlProduct;
-
-  console.log(products);
 }
 
 productList();
@@ -98,7 +96,13 @@ const quantitySelect = [...document.querySelectorAll(".quantity-select")].map(
       });
     }
 
-    console.log(cart);
+    const addedToCart = document.querySelector(".added-to-cart");
+
+    addedToCart.style.opacity = 1;
+
+    setTimeout(() => {
+      addedToCart.style.opacity = 0;
+    }, 2000);
 
     cart.map((value) => {
       cartQuantity = cartQuantity + value.quantity;
