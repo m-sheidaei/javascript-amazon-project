@@ -64,17 +64,15 @@ productList();
 
 const productQuantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-const quantitySelect = [...document.querySelectorAll(".quantity-select")].map(
-  (value) => {
-    let quantityOption = "";
-    productQuantity.map((value) => {
-      quantityOption += `
+[...document.querySelectorAll(".quantity-select")].map((value) => {
+  let quantityOption = "";
+  productQuantity.map((value) => {
+    quantityOption += `
           <option value="${value}" class="a">${value}</option>
         `;
-    });
-    value.innerHTML = quantityOption;
-  }
-);
+  });
+  value.innerHTML = quantityOption;
+});
 
 // click button and reaction
 [...document.querySelectorAll(".js-add-to-card")].map((value) => {
@@ -98,13 +96,10 @@ const quantitySelect = [...document.querySelectorAll(".quantity-select")].map(
         quantity: quantity,
       });
     }
-
-    const addedToCart = document.querySelector(".added-to-cart");
-
-    addedToCart.style.opacity = 1;
-
+    const textAdded = parent.querySelector(".added-to-cart");
+    textAdded.style.opacity = 1;
     setTimeout(() => {
-      addedToCart.style.opacity = 0;
+      textAdded.style.opacity = 0;
     }, 2000);
 
     cart.map((value) => {
