@@ -1,9 +1,9 @@
-import { cart } from "../data/carts.js";
+import { cart, addToCart } from "../data/carts.js";
 import { products } from "../data/products.js";
 
-let htmlProduct = "";
-
+//create cart products
 function productList() {
+  let htmlProduct = "";
   let productContainer = document.querySelector(".products-grid");
 
   products.map((value) => {
@@ -38,9 +38,7 @@ function productList() {
 
 
           <div class="product-quantity-container">
-            <select class='quantity-select'>
-           
-            </select>
+            <select class='quantity-select'> </select>
           </div>
           <div class="product-spacer"></div>
 
@@ -59,11 +57,10 @@ function productList() {
 
   productContainer.innerHTML = htmlProduct;
 }
-
 productList();
 
+//create list order number
 const productQuantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 [...document.querySelectorAll(".quantity-select")].map((value) => {
   let quantityOption = "";
   productQuantity.map((value) => {
@@ -74,38 +71,29 @@ const productQuantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   value.innerHTML = quantityOption;
 });
 
+function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.map((value) => {
+    cartQuantity = cartQuantity + value.quantity;
+  });
+
+  document.querySelector(".cart-quantity").innerHTML = cartQuantity;
+}
+
 // click button and reaction
 [...document.querySelectorAll(".js-add-to-card")].map((value) => {
   const productId = value.dataset.productId;
   value.addEventListener("click", () => {
     const parent = value.closest(".product-container");
-    const quantity = parseInt(parent.querySelector(".quantity-select").value);
 
-    let machingItem;
-    let cartQuantity = 0;
-    cart.map((item) => {
-      if (productId === item.id) {
-        machingItem = item;
-      }
-    });
-    if (machingItem) {
-      machingItem.quantity += quantity;
-    } else {
-      cart.push({
-        id: productId,
-        quantity: quantity,
-      });
-    }
+    addToCart(productId, parent);
+
     const textAdded = parent.querySelector(".added-to-cart");
     textAdded.style.opacity = 1;
     setTimeout(() => {
       textAdded.style.opacity = 0;
     }, 2000);
 
-    cart.map((value) => {
-      cartQuantity = cartQuantity + value.quantity;
-    });
-
-    document.querySelector(".cart-quantity").innerHTML = cartQuantity;
+    updateCartQuantity();
   });
 });
