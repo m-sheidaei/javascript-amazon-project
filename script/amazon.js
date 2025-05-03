@@ -1,5 +1,6 @@
 import { cart, addToCart } from "../data/carts.js";
 import { products } from "../data/products.js";
+import { formatCurrency } from "./utils/money.js";
 
 //create cart products
 function productList() {
@@ -30,11 +31,7 @@ function productList() {
             }</div>
           </div>
 
-          <div class="product-price">$ ${
-            value.priceCents < 100
-              ? value.priceCents
-              : (value.priceCents / 100).toFixed(2)
-          }</div>
+          <div class="product-price">$ ${formatCurrency(value.priceCents)}</div>
 
 
           <div class="product-quantity-container">
