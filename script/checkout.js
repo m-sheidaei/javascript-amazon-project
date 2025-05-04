@@ -1,4 +1,4 @@
-import { cart } from "../data/carts.js";
+import { cart, removeFromCart } from "../data/carts.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -6,7 +6,7 @@ let addproduct = () => {
   let htmlCheckOut = "";
   let orderSummary = document.querySelector(".order-summary");
 
-  let machingProduct = "";
+  let machingProduct;
 
   cart.map((item) => {
     let pId = item.productId;
@@ -40,7 +40,9 @@ let addproduct = () => {
                  <span class="update-quantity-link link-primary">
                    Update
                  </span>
-                 <span class="delete-quantity-link link-primary">
+                 <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${
+                   machingProduct.id
+                 }">
                    Delete
                  </span>
                </div>
@@ -90,6 +92,15 @@ let addproduct = () => {
  `;
   });
   orderSummary.innerHTML = htmlCheckOut;
+
+  [...document.querySelectorAll(".js-delete-link")].map((link) => {
+    link.addEventListener("click", () => {
+      const productId = link.dataset.productId;
+      const parent = link.closest(".cart-item-container");
+      parent.remove();
+      removeFromCart(productId);
+    });
+  });
 };
 
 addproduct();
