@@ -9,7 +9,7 @@ let addproduct = () => {
   let machingProduct;
 
   cart.map((item) => {
-    let pId = item.productId;
+    let pId = item.id;
 
     products.map((productItem) => {
       if (pId === productItem.id) {
