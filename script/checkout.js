@@ -1,4 +1,4 @@
-import { cart, removeFromCart } from "../data/carts.js";
+import { cart, removeFromCart, updateDeliveryOption } from "../data/carts.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
@@ -62,7 +62,7 @@ let addproduct = () => {
                </div>
              </div>
 
-             <div class="delivery-options">
+             <div class="delivery-options " >
                <div class="delivery-options-title">
                  Choose a delivery option:
                </div>
@@ -88,7 +88,10 @@ let addproduct = () => {
       const ischecked = dateItem.id === deliveryOptionId;
 
       html += `
-        <div class="delivery-option">
+        <div class="delivery-option js-delivery-option" data-product-id=${
+          machingProduct.id
+        }
+             data-delivery-option-id=${dateItem.id}>
                  <input
                    type="radio"
                    ${ischecked ? "checked" : ""}
@@ -118,3 +121,10 @@ let addproduct = () => {
 };
 
 addproduct();
+
+[...document.querySelectorAll(".js-delivery-option")].map((element) => {
+  element.addEventListener("click", () => {
+    const { productId, deliveryOptionId } = element.dataset;
+    updateDeliveryOption(productId, deliveryOptionId);
+  });
+});
