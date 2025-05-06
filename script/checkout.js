@@ -4,7 +4,7 @@ import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptins.js";
 
-let addproduct = () => {
+function renderOrderSummery() {
   let htmlCheckOut = "";
   let orderSummary = document.querySelector(".order-summary");
 
@@ -118,13 +118,14 @@ let addproduct = () => {
       removeFromCart(productId);
     });
   });
-};
 
-addproduct();
-
-[...document.querySelectorAll(".js-delivery-option")].map((element) => {
-  element.addEventListener("click", () => {
-    const { productId, deliveryOptionId } = element.dataset;
-    updateDeliveryOption(productId, deliveryOptionId);
+  [...document.querySelectorAll(".js-delivery-option")].map((element) => {
+    element.addEventListener("click", () => {
+      const { productId, deliveryOptionId } = element.dataset;
+      updateDeliveryOption(productId, deliveryOptionId);
+      renderOrderSummery();
+    });
   });
-});
+}
+
+renderOrderSummery();
