@@ -3,36 +3,35 @@ import {
   removeFromCart,
   updateDeliveryOption,
 } from "../../data/carts.js";
-import { products } from "../../data/products.js";
+import { getProducts, products } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
-import { deliveryOptions } from "../../data/deliveryOptins.js";
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from "../../data/deliveryOptins.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummery() {
   let htmlCheckOut = "";
   let orderSummary = document.querySelector(".order-summary");
 
-  let machingProduct;
+  let totalquantity = 0;
 
   cart.map((item) => {
     let pId = item.id;
+    let machingProduct = getProducts(pId);
 
-    products.map((productItem) => {
-      if (pId === productItem.id) {
-        machingProduct = productItem;
-      }
-    });
+    totalquantity += item.quantity;
 
-    let delivery;
-    deliveryOptions.map((option) => {
-      if (option.id === item.deliveryOptionId) {
-        delivery = option;
-      }
-    });
+    let delivery = getDeliveryOption(item.deliveryOptionId);
 
     const today = dayjs();
     const deliveryDay = today.add(delivery.deliveryDay, "day");
     const dateFormat = deliveryDay.format("dddd , MMMM , D");
+    document.querySelector(
+      ".return-to-home-link"
+    ).innerHTML = `${totalquantity} items`;
 
     htmlCheckOut += `
     <div class="cart-item-container">
@@ -76,6 +75,7 @@ export function renderOrderSummery() {
          </div>
  `;
   });
+
   orderSummary.innerHTML = htmlCheckOut;
 
   function deliveryOption(machingProduct, deliveryOptionId) {
@@ -120,6 +120,8 @@ export function renderOrderSummery() {
       const parent = link.closest(".cart-item-container");
       parent.remove();
       removeFromCart(productId);
+      renderOrderSummery();
+      renderPaymentSummary();
     });
   });
 
@@ -128,6 +130,7 @@ export function renderOrderSummery() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummery();
+      renderPaymentSummary();
     });
   });
 }
