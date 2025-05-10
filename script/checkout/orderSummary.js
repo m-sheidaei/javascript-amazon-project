@@ -1,6 +1,7 @@
 import {
   cart,
   removeFromCart,
+  updateCount,
   updateDeliveryOption,
 } from "../../data/carts.js";
 import { getProducts, products } from "../../data/products.js";
@@ -54,7 +55,9 @@ export function renderOrderSummery() {
                  <span> Quantity: <span class="quantity-label">${
                    item.quantity
                  }</span> </span>
-                 <span class="update-quantity-link link-primary">
+                 <span class="update-quantity-link link-primary" data-product-id="${
+                   machingProduct.id
+                 }" >
                    Update
                  </span>
                  <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${
@@ -129,6 +132,15 @@ export function renderOrderSummery() {
     element.addEventListener("click", () => {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
+      renderOrderSummery();
+      renderPaymentSummary();
+    });
+  });
+
+  [...document.querySelectorAll(".update-quantity-link")].forEach((item) => {
+    item.addEventListener("click", () => {
+      const productId = item.dataset.productId;
+      updateCount(productId);
       renderOrderSummery();
       renderPaymentSummary();
     });

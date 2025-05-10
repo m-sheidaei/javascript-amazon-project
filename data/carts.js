@@ -32,6 +32,14 @@ export function addToCart(productId, parent) {
   saveToStorage();
 }
 
+export function updateCount(productId) {
+  const item = cart.find((product) => product.id === productId);
+  if (item) {
+    item.quantity += 1;
+  }
+  saveToStorage();
+}
+
 export function removeFromCart(productId) {
   cart = cart.filter((item) => item.id !== productId);
   saveToStorage();
